@@ -13,24 +13,24 @@ test.describe('Complete shopping flow', () => {
     await page.goto('/', { waitUntil: 'networkidle' });
     await loginPage.login('standard_user', 'secret_sauce');
 
+ 
     const inventoryPage = new InventoryPage(page);
     await inventoryPage.addProductsToCart([0, 1]); // ajoute 2 produits
     await inventoryPage.goToCart();
 
+  
     const cartPage = new CartPage(page);
     await cartPage.verifyItemsCount(2);
 
-    
+   
     await cartPage.proceedToCheckout();
 
-    
     const checkoutPage = new CheckoutPage(page);
     await checkoutPage.fillCheckoutInfo('Chayma', 'Chiha', '1000');
 
-    //
+    
     const checkoutCompletePage = new CheckoutCompletePage(page);
-    const message = await checkoutCompletePage.verifyCompletion();
-    await expect(message).toContain('THANK YOU FOR YOUR ORDER');
+    await checkoutCompletePage.verifyCompletion(); // plus besoin de récupérer le texte, c'est vérifié ici
   });
 
 });
