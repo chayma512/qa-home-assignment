@@ -1,0 +1,145 @@
+{
+  "info": {
+    "name": "JSONPlaceholder API Tests",
+    "_postman_id": "qa-home-assignment-collection",
+    "description": "Collection for testing /posts endpoint on JSONPlaceholder API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET All Posts",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/posts"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"Response is an array with at least 1 post\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.be.an('array');",
+              "    pm.expect(jsonData.length).to.be.above(0);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "GET Single Post",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/posts/1"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"Post has required fields\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('userId');",
+              "    pm.expect(jsonData).to.have.property('id');",
+              "    pm.expect(jsonData).to.have.property('title');",
+              "    pm.expect(jsonData).to.have.property('body');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST New Post",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"foo\",\n    \"body\": \"bar\",\n    \"userId\": 1\n}"
+        },
+        "url": "{{baseUrl}}/posts"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "pm.test(\"Response contains created post data\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.title).to.eql('foo');",
+              "    pm.expect(jsonData.body).to.eql('bar');",
+              "    pm.expect(jsonData.userId).to.eql(1);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "PUT Update Post",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"id\": 1,\n    \"title\": \"updated title\",\n    \"body\": \"updated body\",\n    \"userId\": 1\n}"
+        },
+        "url": "{{baseUrl}}/posts/1"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test(\"Updated fields are reflected\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.title).to.eql('updated title');",
+              "    pm.expect(jsonData.body).to.eql('updated body');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "DELETE Post",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": "{{baseUrl}}/posts/1"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

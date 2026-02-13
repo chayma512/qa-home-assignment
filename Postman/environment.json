@@ -1,0 +1,11 @@
+{
+  "id": "qa-home-assignment-env",
+  "name": "JSONPlaceholder Environment",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "https://jsonplaceholder.typicode.com",
+      "enabled": true
+    }
+  ]
+}
